@@ -1,0 +1,6 @@
+<ion-content padding>
+<p>You need to verify your email to continue</p>
+
+<p *ngIf="emailSent" color="secondary">{{emailSent}}</p>
+<button ion-button (click)="resendVerification()">Resend?</button>
+</ion-content>

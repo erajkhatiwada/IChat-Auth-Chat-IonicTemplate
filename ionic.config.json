@@ -1,0 +1,7 @@
+{
+  "name": "SRDChat",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

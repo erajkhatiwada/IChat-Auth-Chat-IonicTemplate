@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Login</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <form #loginForm="ngForm" (ngSubmit)="login()">
+    <ion-item>
+      <ion-label>Email: </ion-label>
+      <ion-input type="text" required [(ngModel)]="user.email" name="email" email></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Password: </ion-label>
+      <ion-input type="password" required [(ngModel)]="user.password" name="password"></ion-input>
+    </ion-item>
+    <button ion-button type="submit" block [disabled]="!loginForm.valid">
+      Login
+      <ion-spinner *ngIf="loading" name="bubbles"></ion-spinner>
+    </button>
+    <p class="forget_your_password" (click)="forgetYourPassword()">
+      Forget your password?
+    </p>
+  </form>
+
+  <p color="secondary" [class]=" (passwordChangeMessage === 'Password Reset Email Sent') ? 'passwordResetEmail passwordResetEmailSecondary' : 'passwordResetEmail passwordResetEmailDanger' " *ngIf="passwordChangeMessage">{{passwordChangeMessage}}</p>
+
+  <p *ngIf="currentUser">Logged in</p>
+
+</ion-content>

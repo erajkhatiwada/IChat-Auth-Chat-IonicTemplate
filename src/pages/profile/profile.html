@@ -1,0 +1,18 @@
+<ion-content scroll="false">
+  <div class="splash-bg"></div>
+  <div class="splash-info">
+    <div class="splash-logo"></div>
+    <div class="splash-intro">
+    </div>
+  </div>
+
+  <div *ngIf="loggedUserDetails" padding>
+    <!-- <img style="text-align:center; display:block; width:140px; height:140px; margin: auto" src="{{loggedUserDetails.photoURL}}"> -->
+    <h1>Logged as: {{loggedUserDetails.displayName}}</h1>
+    <button ion-button color="secondary" block (click)="logout()">Logout</button>
+  </div>
+  
+  <button ion-button block (click)="goToChatPage()">Enter Chatroom</button>
+
+
+</ion-content>

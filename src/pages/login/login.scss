@@ -1,0 +1,18 @@
+page-login {
+    .forget_your_password{
+        color: blue;
+        cursor: pointer;
+    }
+
+    .passwordResetEmail{
+        text-align: center;
+    }
+
+    .passwordResetEmailSecondary{
+        color: green;
+    }
+
+    .passwordResetEmailDanger{
+        color: red;
+    }
+}
