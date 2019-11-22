@@ -1,3 +1,5 @@
+Demo: https://conferencenow.info/ichat/
+
 # IChat (Template for chat) 
 Ionic + Firebase App
 
