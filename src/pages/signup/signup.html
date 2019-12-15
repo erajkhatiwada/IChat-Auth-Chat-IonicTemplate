@@ -93,7 +93,7 @@
           Maximum 50 characters
         </div>
       </ion-item>
-      <button type="submit" ion-button block color="primary" [disabled]="signupform.invalid">
+      <button type="submit" ion-button block color="primary" [disabled]="signupform.invalid || loading">
         SIGNUP 
         <ion-spinner *ngIf="loading" name="bubbles"></ion-spinner>
       </button>

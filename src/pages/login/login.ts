@@ -4,6 +4,7 @@ import { AuthProvider } from '../../providers/auth/auth';
 import { LoginClass } from '../../data/Login';
 import { ProfilePage } from '../profile/profile';
 import { VerifyemailPage } from '../verifyemail/verifyemail';
+import { SignupPage } from '../signup/signup';
 
 @IonicPage()
 @Component({
@@ -133,6 +134,10 @@ export class LoginPage {
       ]
     });
     prompt.present();
+  }
+
+  goToSignUp(){
+    this.navCtrl.push(SignupPage);
   }
   
 }

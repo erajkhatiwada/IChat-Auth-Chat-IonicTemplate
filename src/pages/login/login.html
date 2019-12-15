@@ -15,12 +15,15 @@
       <ion-label>Password: </ion-label>
       <ion-input type="password" required [(ngModel)]="user.password" name="password"></ion-input>
     </ion-item>
-    <button ion-button type="submit" block [disabled]="!loginForm.valid">
+    <p class="forget_your_password" text-right (click)="forgetYourPassword()">
+      Forgot password?
+    </p>
+    <button ion-button type="submit" block [disabled]="!loginForm.valid || loading">
       Login
       <ion-spinner *ngIf="loading" name="bubbles"></ion-spinner>
     </button>
-    <p class="forget_your_password" (click)="forgetYourPassword()">
-      Forget your password?
+    <p text-center>
+      Not a member? <span class="forget_your_password" (click)="goToSignUp()">Register</span>
     </p>
   </form>
 

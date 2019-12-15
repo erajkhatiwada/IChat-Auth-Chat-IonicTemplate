@@ -83,7 +83,7 @@ export class SignupPage {
 
   userCreatedToast(){
     let toast = this.toastCtrl.create({
-      message: 'User was added successfully',
+      message: 'You have successfully registered',
       duration: 3000,
       position: 'bottom'
     });
