@@ -24,6 +24,9 @@ import { SignupPage } from '../pages/signup/signup';
 import { AuthProvider } from '../providers/auth/auth';
 import { ProfilePage } from '../pages/profile/profile';
 import { VerifyemailPage } from '../pages/verifyemail/verifyemail';
+//for global error handling and logging
+import { WebhookProvider } from '../providers/webhook/webhook';
+import { GlobalErrorHanlder } from './app.globalerrorhandling';
 
 
 
@@ -37,6 +40,11 @@ const firebaseConfig = {
   appId: "YOUR_KEY",
   measurementId: "YOUR_KEY"
 };
+
+const environment = {
+  production: false
+};
+const errorHandlerClass = environment.production? GlobalErrorHanlder:IonicErrorHandler;
 
 @NgModule({
   declarations: [
@@ -71,10 +79,11 @@ const firebaseConfig = {
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    {provide: ErrorHandler, useClass: errorHandlerClass},
     FirebaseProvider,
     AngularFireAuth,
-    AuthProvider
+    AuthProvider,
+    WebhookProvider
   ]
 })
 export class AppModule {}
