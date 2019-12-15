@@ -63,4 +63,14 @@ page-chat {
   .floatLeft{
     float: left;
   }
+
+  //ionic doesn't allow us to copy by default
+  //we have to manually give access to copy and paste
+  .selectable {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+
 }

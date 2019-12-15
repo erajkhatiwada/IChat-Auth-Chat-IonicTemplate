@@ -1,36 +1,49 @@
 <ion-header>
-    <ion-navbar>
-      <ion-title>ChatRoom</ion-title>
-    </ion-navbar>
-  </ion-header>
-  
-  
-  <ion-content padding >
-    <div id="chatMessage">
-      <div class="message" *ngFor="let message of messages ; trackBy: trackByFn">
-        <div *ngIf="message.username != user" class="topUsername">{{ message.username}}</div>
-        <div [class]="message.username == user ? 'innerMessageRight messageRight' : 'innerMessage messageLeft'">
-          <div class="msg">{{ message.message}}</div>
-          <!--Converting timestamp to date-->
-          <div [class]="message.username == user ? 'floatRight' : 'floatLeft' ">
-            <div *ngIf="message.timestamp && isInToday(message.timestamp)">
-              <small>{{message.timestamp | date:'shortTime'}}</small></div>
-            <div *ngIf="message.timestamp && !isInToday(message.timestamp)">
-              <small>{{message.timestamp | date:'MMM d, y, h:mm a'}}</small></div>
-          </div>
+  <ion-navbar>
+    <ion-title>ChatRoom</ion-title>
+  </ion-navbar>
+</ion-header>
 
+
+<ion-content padding class="selectable">
+  <!--Load Previous Messages-->
+  <ion-refresher (ionRefresh)="loadPreviousMessage($event)" *ngIf="messages">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to load" refreshingSpinner="circles"
+      refreshingText="Loading previous message ...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <!--Spinner-->
+  <div style="text-align:center">
+    <ion-spinner *ngIf="isMessageLoading" name="bubbles"></ion-spinner>
+    <p ion-text color="danger" *ngIf="errorMessage">{{errorMessage}}</p>
+  </div>
+
+  <div id="chatMessage">
+    <div class="message" *ngFor="let message of messages ; trackBy: trackByFn">
+      <div *ngIf="message.username != user" class="topUsername">{{ message.username}}</div>
+      <div [class]="message.username == user ? 'innerMessageRight messageRight' : 'innerMessage messageLeft'">
+        <div class="msg">{{ message.message}}</div>
+        <!--Converting timestamp to date-->
+        <div [class]="message.username == user ? 'floatRight' : 'floatLeft' ">
+          <div *ngIf="message.timestamp && isInToday(message.timestamp)">
+            <small>{{message.timestamp | date:'shortTime'}}</small></div>
+          <div *ngIf="message.timestamp && !isInToday(message.timestamp)">
+            <small>{{message.timestamp | date:'MMM d, y, h:mm a'}}</small></div>
         </div>
+
       </div>
     </div>
-  </ion-content>
-  
-  <ion-footer>
-    <ion-toolbar>
-      <ion-input type="text" name="message" placeholder="Message" [(ngModel)]="message" (keyup.enter)="sendMessage()"></ion-input>
-      <ion-buttons end>
-        <button ion-button icon-right color="royal" [disabled]="!message" (click)="sendMessage()">
-          <ion-icon name="md-send"></ion-icon>
-        </button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-footer>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-input type="text" name="message" placeholder="Message" [(ngModel)]="message" (keyup.enter)="sendMessage()">
+    </ion-input>
+    <ion-buttons end>
+      <button ion-button icon-right color="royal" [disabled]="!message" (click)="sendMessage()">
+        <ion-icon name="md-send"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

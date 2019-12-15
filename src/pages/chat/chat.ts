@@ -23,6 +23,8 @@ export class ChatPage {
   initLen = -20;
   previousMessageLength:any;
   firstTime = true;
+  isMessageLoading:boolean = true;
+  errorMessage:string;
   
   constructor(public navCtrl: NavController,
     public authProvider:AuthProvider,
@@ -49,7 +51,7 @@ export class ChatPage {
         /**
          * Get new message alert and other features use code below
          */
-
+        this.isMessageLoading = false;
         if (res.length > this.previousMessageLength && this.previousMessageLength != undefined) {  
           if (this.isNotAtTheBottom()) {
             if (!this.isCurrentUserLastMessage(res)) {
@@ -81,9 +83,11 @@ export class ChatPage {
           }, 100);
         }
         this.firstTime = false;
-
+      },(error)=> {
+        this.isMessageLoading = false;
+        this.errorMessage = 'Error loading chat!';
       });
-      
+
   }
 
   sendMessage() {
@@ -167,5 +171,20 @@ export class ChatPage {
     let email = arr[arr.length-1]["username"];
     return email;
   }
+
+  loadPreviousMessage(refresher) {
+    setTimeout(() => {
+      this.initLen = this.initLen - 15;
+      this.firebaseProvider.getChatMessages()
+         .pipe(map(item => item
+          .map(newItem => new ChatMessage(newItem["username"], newItem["message"], newItem["timestamp"], newItem["key"]))))
+        .subscribe(async res => {
+          //update: we are just showing without concat
+          this.messages = await res.slice(this.initLen);
+          refresher.complete();
+        });
+    }, 2000);
+  }
+
 
 }
