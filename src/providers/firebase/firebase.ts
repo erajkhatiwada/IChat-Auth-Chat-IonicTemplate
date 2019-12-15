@@ -14,7 +14,10 @@ export class FirebaseProvider {
     return this.firebaseDatabase.list(this.url).valueChanges();
   }
 
-  pushMessages(chatRoom){
-    return this.firebaseDatabase.database.ref(this.url).push(chatRoom,(error)=>{});
+  pushMessages(message){
+    let myRef = this.firebaseDatabase.database.ref(this.url).push();
+    let key = myRef.key;
+    message.key = key; //to make every message unique
+    return this.firebaseDatabase.database.ref(this.url).push(message,(error)=>{});
   }
 }

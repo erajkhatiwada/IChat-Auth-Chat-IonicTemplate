@@ -29,7 +29,7 @@ export class ChatPage {
     await this.getUserUsingAuthState();
     this.firebaseProvider.getChatMessages()
       .pipe(map(item => item
-        .map(newItem => new ChatMessage(newItem["username"], newItem["message"], newItem["timestamp"]))))
+        .map(newItem => new ChatMessage(newItem["username"], newItem["message"], newItem["timestamp"], newItem["key"]))))
       .subscribe( async res => {
         this.messages = await res;
         setTimeout(() => {
