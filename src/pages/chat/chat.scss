@@ -5,20 +5,18 @@ page-chat {
     padding: 5px 10px;
     background-color: #007aff;
     margin: 5px;
-    //color: white;
     border-radius: 3px;
-    max-width: 250px;
+    max-width: 80%;
   }
 
   .innerMessageRight {
-    //color: rgba(0, 0, 0, 1);
     display: inline-block;
     padding: 5px 10px;
     background-color: #007aff;
     margin: 5px;
     color: white;
     border-radius: 3px;
-    max-width: 250px;
+    max-width: 80%;
   }
 
   .topUsername {
@@ -41,9 +39,6 @@ page-chat {
     font-size: 80%;
   }
 
-  // .message {
-  //   //font-size: 120%;
-  // }
   .message:after {
     content: '';
     display: block;

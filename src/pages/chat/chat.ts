@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Content } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Content, ToastController } from 'ionic-angular';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { ChatMessage } from '../../data/Message';
 import { map } from 'rxjs/operators';
@@ -19,10 +19,15 @@ export class ChatPage {
   messages: ChatMessage[];
   loggedUser:any;
   loggedUserDetails:UserClass;
+
+  initLen = -20;
+  previousMessageLength:any;
+  firstTime = true;
   
   constructor(public navCtrl: NavController,
     public authProvider:AuthProvider,
     public navParams: NavParams,
+    public toastCtrl: ToastController,
     public firebaseProvider: FirebaseProvider) {}
 
   async ionViewDidLoad() {
@@ -31,11 +36,54 @@ export class ChatPage {
       .pipe(map(item => item
         .map(newItem => new ChatMessage(newItem["username"], newItem["message"], newItem["timestamp"], newItem["key"]))))
       .subscribe( async res => {
-        this.messages = await res;
-        setTimeout(() => {
-          this.scrollToBottom();
-        }, 300);
+        /**
+         * Simple Implementation
+         * Uncomment to use just this
+         */
+
+        // this.messages = await res;
+        // setTimeout(() => {
+        //   this.scrollToBottom();
+        // }, 300);
+
+        /**
+         * Get new message alert and other features use code below
+         */
+
+        if (res.length > this.previousMessageLength && this.previousMessageLength != undefined) {  
+          if (this.isNotAtTheBottom()) {
+            if (!this.isCurrentUserLastMessage(res)) {
+              let username = this.getEmailOfLastUser(res);
+              this.newMessageAlert(username);
+            } else {
+              setTimeout(() => {
+                this.scrollToBottom();
+              }, 0);
+            }
+          } else {
+            setTimeout(() => {
+              this.scrollToBottom();
+            }, 0);
+          }
+        }
+
+        this.previousMessageLength = res.length;
+        //to add message instead of removing one message everytime
+        if (!this.firstTime) {
+          this.initLen = this.initLen - 1;
+        }
+        let slicedChat = await res.slice(this.initLen);
+        this.messages = slicedChat;
+
+        if (this.firstTime) {
+          setTimeout(() => {
+            this.scrollToBottom();
+          }, 100);
+        }
+        this.firstTime = false;
+
       });
+      
   }
 
   sendMessage() {
@@ -91,6 +139,33 @@ export class ChatPage {
 
   trackByFn(item) {
     return item.key; // unique id corresponding to the item
+  }
+
+  isNotAtTheBottom(): boolean{
+    let full = this.content.getScrollElement().scrollHeight;
+    let less = this.content.getScrollElement().scrollTop+ this.content.getScrollElement().offsetHeight;
+    if(full - less > 20){
+      return true;
+    }
+    return false;
+  }
+
+  newMessageAlert(username){
+    let  toast = this.toastCtrl.create({
+        message : 'New message from '+username,
+        position: 'bottom',
+        duration: 2500
+      }); 
+    toast.present();
+  }
+
+  isCurrentUserLastMessage(arr:any[]){
+    return (arr[arr.length-1].username.trim() == this.loggedUserDetails.email.trim());
+  }
+
+  getEmailOfLastUser(arr){
+    let email = arr[arr.length-1]["username"];
+    return email;
   }
 
 }
