@@ -38,7 +38,7 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      
+      //Logic to make sure user goes to profile after email confirm
       this.authProvider.getLoggedInUser().onAuthStateChanged(res => {
         if(!this.check){
           this.check = true;
@@ -54,6 +54,7 @@ export class MyApp {
           } 
         }
       });
+
     });
   }
 
