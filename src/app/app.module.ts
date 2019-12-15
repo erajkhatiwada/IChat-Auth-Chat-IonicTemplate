@@ -14,7 +14,6 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { FirebaseProvider } from '../providers/firebase/firebase';
 import { HttpClientModule } from '@angular/common/http';
-import {TimeAgoPipe} from 'time-ago-pipe';
 import { IonicStorageModule } from '@ionic/storage';
 
 //pages
@@ -51,7 +50,6 @@ const errorHandlerClass = environment.production? GlobalErrorHanlder:IonicErrorH
     MyApp,
     HomePage,
     ChatPage,
-    TimeAgoPipe,
     LoginPage,
     SignupPage,
     ProfilePage,

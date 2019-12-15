@@ -79,4 +79,18 @@ export class ChatPage {
         }
     });
   }
+
+  isInToday(inputDate) {
+    var today = new Date().setHours(0, 0, 0, 0);
+    var thatDay = new Date(inputDate).setHours(0, 0, 0, 0);
+    if (today === thatDay) {
+      return true;
+    }
+    return false;
+  }
+
+  trackByFn(item) {
+    return item.key; // unique id corresponding to the item
+  }
+
 }

@@ -7,11 +7,18 @@
   
   <ion-content padding >
     <div id="chatMessage">
-      <div class="message" *ngFor="let message of messages">
+      <div class="message" *ngFor="let message of messages ; trackBy: trackByFn">
         <div *ngIf="message.username != user" class="topUsername">{{ message.username}}</div>
         <div [class]="message.username == user ? 'innerMessageRight messageRight' : 'innerMessage messageLeft'">
           <div class="msg">{{ message.message}}</div>
-          <div><small>{{message.timestamp| timeAgo}}</small></div>
+          <!--Converting timestamp to date-->
+          <div [class]="message.username == user ? 'floatRight' : 'floatLeft' ">
+            <div *ngIf="message.timestamp && isInToday(message.timestamp)">
+              <small>{{message.timestamp | date:'shortTime'}}</small></div>
+            <div *ngIf="message.timestamp && !isInToday(message.timestamp)">
+              <small>{{message.timestamp | date:'MMM d, y, h:mm a'}}</small></div>
+          </div>
+
         </div>
       </div>
     </div>
