@@ -48,8 +48,8 @@ export class LoginPage {
 
   createToastForError(error){
     let message;
-    if(error.code == 'auth/user-not-found' || error.code === 'auth/wrong-password'){
-      message = 'Incorrect username or password.';
+    if(error.code == 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-email'){
+      message = 'Incorrect email or password.';
     }else{
       message = 'Something went wrong! Please try again later.';
     }

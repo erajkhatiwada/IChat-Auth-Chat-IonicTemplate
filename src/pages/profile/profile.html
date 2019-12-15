@@ -1,3 +1,17 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>IChat</ion-title>
+
+    <ion-buttons end>
+      <button (click)="logout()" ion-button icon-only color="danger">
+        Logout<ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
+
+  </ion-navbar>
+</ion-header>
+
+
 <ion-content scroll="false">
   <div class="splash-bg"></div>
   <div class="splash-info">
@@ -7,12 +21,11 @@
   </div>
 
   <div *ngIf="loggedUserDetails" padding>
-    <!-- <img style="text-align:center; display:block; width:140px; height:140px; margin: auto" src="{{loggedUserDetails.photoURL}}"> -->
-    <h1>Logged as: {{loggedUserDetails.displayName}}</h1>
-    <button ion-button color="secondary" block (click)="logout()">Logout</button>
+    <h1 text-center>{{loggedUserDetails.displayName}}</h1>
   </div>
-  
-  <button ion-button block (click)="goToChatPage()">Enter Chatroom</button>
 
+  <div style="text-align: center;">
+    <button ion-button text-center (click)="goToChatPage()">Enter Chatroom</button>
+  </div>
 
 </ion-content>
