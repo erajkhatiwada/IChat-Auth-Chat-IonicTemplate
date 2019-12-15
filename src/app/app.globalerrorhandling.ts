@@ -14,7 +14,7 @@ export interface LoggingInfo{
 
 @Injectable()
 export class GlobalErrorHanlder extends ErrorHandler{
-        
+    // replace your discord webhook url in webhook provider to log error 
     constructor(public sharedProvider:WebhookProvider, public authProvider:AuthProvider){
         super();
     }

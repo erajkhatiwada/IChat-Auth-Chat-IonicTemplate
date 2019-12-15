@@ -5,7 +5,7 @@ import {AngularFireDatabase} from 'angularfire2/database'
 @Injectable()
 export class FirebaseProvider {
 
-  url = 'appdata/SRDChat';
+  url = 'appdata/IChat';
   constructor(public http: HttpClient, 
     public firebaseDatabase:AngularFireDatabase) {
   }

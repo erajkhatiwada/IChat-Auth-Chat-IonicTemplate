@@ -38,24 +38,31 @@ export class ChatPage {
       });
   }
 
-  sendMessage(){
-    if(this.message === ''){
-    }else{
-      let user = {
-        username: this.user,
-        message: this.message,
-        timestamp: new Date().getTime()
-      }
-      this.firebaseProvider.pushMessages(user).then(res => {
+  sendMessage() {
+    if (this.message != undefined) {
+      if (this.message.trim() != '') {
+        let userMessage = {
+          username: this.user,
+          message: this.message.trim(),
+          timestamp: new Date().getTime()
+        }
+        this.firebaseProvider.pushMessages(userMessage).then(res => {
+          this.message = '';
+          this.scrollToBottom();
+        });
+      }else{
         this.message = '';
-        this.scrollToBottom();
-      });
+      }
     }
   }
 
-  scrollToBottom(){
-    if(this.content.isScrolling == false){
-      this.content.scrollToBottom();
+  scrollToBottom() {
+    if (this.content != null) {
+      if (this.content.isScrolling == false) {
+        setTimeout(() => {
+          this.content.scrollToBottom();
+        });
+      }
     }
   }
 
