@@ -26,6 +26,7 @@ import { VerifyemailPage } from '../pages/verifyemail/verifyemail';
 //for global error handling and logging
 import { WebhookProvider } from '../providers/webhook/webhook';
 import { GlobalErrorHanlder } from './app.globalerrorhandling';
+import { HelperProvider } from '../providers/helper/helper';
 
 
 
@@ -81,7 +82,8 @@ const errorHandlerClass = environment.production? GlobalErrorHanlder:IonicErrorH
     FirebaseProvider,
     AngularFireAuth,
     AuthProvider,
-    WebhookProvider
+    WebhookProvider,
+    HelperProvider
   ]
 })
 export class AppModule {}
