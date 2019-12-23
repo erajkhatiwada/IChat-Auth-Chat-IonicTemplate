@@ -1,9 +1,9 @@
 page-chat {
-  .innerMessage {
-    color: rgba(0, 0, 0, 1);
+  .innerMessageLeft {
     display: inline-block;
     padding: 5px 10px;
-    background-color: #007aff;
+    background-color: rgb(241, 240, 240);
+    color: black;
     margin: 5px;
     border-radius: 3px;
     max-width: 80%;
@@ -17,6 +17,10 @@ page-chat {
     color: white;
     border-radius: 3px;
     max-width: 80%;
+  }
+
+  .messageWithImageAndVideo{
+    max-width: 250px;
   }
 
   .topUsername {
@@ -47,7 +51,6 @@ page-chat {
 
   .messageLeft {
     float: left;
-    background-color: rgb(241, 240, 240);
     border-radius: 1.3rem;
   }
 
