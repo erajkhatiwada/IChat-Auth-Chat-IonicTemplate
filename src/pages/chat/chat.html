@@ -23,7 +23,21 @@
       <div *ngIf="message.username != user" class="topUsername">{{ message.username}}</div>
       <div [class]="message.username == user ? 'innerMessageRight messageRight' : 'innerMessageLeft messageLeft'" 
       [ngStyle]="message.username != user? {'background':getHexColorByEmail(message.username),'color': getHexFontByEmail(message.username)}: {} ">
-        <div>{{ message.message}}</div>
+        <!--If regular message -->
+        <div *ngIf="!message.messageType || message.messageType == 'text' ">{{message.message}}</div>
+        <!--If picture -->
+        <div *ngIf="message.messageType == 'image' || message.messageType == 'picture' " class="messageWithImageAndVideo">
+          <p *ngIf="message.message">{{message.message}}</p>
+          <img  [src]="message.url" alt="Image not found">
+        </div>
+        <!--If Video -->
+        <div *ngIf="message.messageType == 'video' " class="messageWithImageAndVideo">
+          <p *ngIf="message.message">{{message.message}}</p>
+          <video width="320" height="240" controls class="messageWithImageAndVideo">
+            <source [src]="message.url">
+            Video not found.
+          </video>
+        </div>
         <!--Converting timestamp to date-->
         <div [class]="message.username == user ? 'floatRight' : 'floatLeft' ">
           <div *ngIf="message.timestamp && isInToday(message.timestamp)">
@@ -35,16 +49,52 @@
       </div>
     </div>
   </div>
+
+    <!-- Mini -->
+    <ion-fab bottom right *ngIf="uploadObject.url" (click)="removeFile()">
+      <button ion-fab mini>
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-fab>
+  
+    <!-- Mini -->
+    <ion-fab bottom right *ngIf="!uploadObject.url" (click)="triggerFileUpload()">
+      <button ion-fab mini>
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-fab>
+
 </ion-content>
 
 <ion-footer>
+  <div style="text-align: center;">
+    <progress *ngIf="uploadProgress" [value]="uploadProgress"  max="100">{{uploadProgress}}%</progress>
+  </div>
   <ion-toolbar>
     <ion-input type="text" name="message" placeholder="Message" [(ngModel)]="message" (keyup.enter)="sendMessage()">
     </ion-input>
     <ion-buttons end>
-      <button ion-button icon-right color="royal" [disabled]="!message" (click)="sendMessage()">
+      <!--Uploaded file preview-->
+      <div *ngIf="uploadObject.url" class="floatLeft">
+        <div style="height: 35px; width: 50px;">
+          <!--If Image-->
+          <img [src]="uploadObject.url" alt="error loading image" *ngIf="uploadObject.messageType == 'image' ">
+          <!--If video-->
+          <div *ngIf="uploadObject.messageType == 'video' ">
+            <video controls style="height: 35px; width: 35px;">
+              <source [src]="uploadObject.url">
+              Video not found.
+            </video>
+          </div>
+        </div>
+      </div>
+      <!--Select file-->
+      <input #uploadFile type="file" (change)="upload($event)" accept="image/*,video/*" style="display: none;">
+      <!--Send button-->
+      <button ion-button icon-right color="royal" [disabled]="!message || fileUpload.nativeElement.value == '' " (click)="sendMessage()">
         <ion-icon name="md-send"></ion-icon>
       </button>
+      
     </ion-buttons>
   </ion-toolbar>
 </ion-footer>

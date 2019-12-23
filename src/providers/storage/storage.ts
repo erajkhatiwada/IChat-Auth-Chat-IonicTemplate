@@ -1,17 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import * as firebase from 'firebase';
 
-/*
-  Generated class for the StorageProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class StorageProvider {
 
   constructor(public http: HttpClient) {
-    console.log('Hello StorageProvider Provider');
   }
+
+  uploadFiles(event,email){
+    let push = firebase.database().ref('appdata/IChat').push();
+    let key = push.key;
+    return firebase.storage().ref(email+'/ChatStorage/'+key).put(event.target.files[0]);
+  }  
 
 }

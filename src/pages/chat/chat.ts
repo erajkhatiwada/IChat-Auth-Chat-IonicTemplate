@@ -1,10 +1,12 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, Content, ToastController } from 'ionic-angular';
 import { FirebaseProvider } from '../../providers/firebase/firebase';
 import { ChatMessage } from '../../data/Message';
 import { map } from 'rxjs/operators';
 import { AuthProvider } from '../../providers/auth/auth';
 import { UserClass } from '../../data/User';
+import { IUploadObj } from '../../data/IUploadObj';
+import { StorageProvider } from '../../providers/storage/storage';
 
 
 @IonicPage()
@@ -28,17 +30,33 @@ export class ChatPage {
   
   //assign color to different user
   colorHashMap = {}; //for storing colors
+
+  uploadProgress : any;
+  isUploaded:boolean;
+  uploadObject : IUploadObj = {
+    url: '',
+    messageType: ''
+  };
+
+  @ViewChild('uploadFile') fileUpload: ElementRef;
+  
   constructor(public navCtrl: NavController,
     public authProvider:AuthProvider,
     public navParams: NavParams,
     public toastCtrl: ToastController,
-    public firebaseProvider: FirebaseProvider) {}
+    public firebaseProvider: FirebaseProvider,
+    public storageProvider:StorageProvider) {}
 
   async ionViewDidLoad() {
     await this.getUserUsingAuthState();
     this.firebaseProvider.getChatMessages()
       .pipe(map(item => item
-        .map(newItem => new ChatMessage(newItem["username"], newItem["message"], newItem["timestamp"], newItem["key"]))))
+        .map(newItem => new ChatMessage(newItem["username"], 
+        newItem["message"], 
+        newItem["timestamp"], 
+        newItem["key"],
+        newItem["messageType"], 
+        newItem["url"]))))
       .subscribe( async res => {
         /**
          * Simple Implementation
@@ -94,32 +112,61 @@ export class ChatPage {
   }
 
   sendMessage() {
-    if (this.message != undefined) {
-      if (this.message.trim() != '') {
-        let userMessage = {
-          username: this.user,
-          message: this.message.trim(),
-          timestamp: new Date().getTime()
-        }
-        this.firebaseProvider.pushMessages(userMessage).then(res => {
+    if(this.fileUpload.nativeElement.value != '' && this.isUploaded){
+      let userMessage: ChatMessage = {
+        username: this.user,
+        message: this.message != undefined ? this.message.trim() : '',
+        timestamp: new Date().getTime(),
+        messageType: this.uploadObject.messageType,
+        url: this.uploadObject.url
+      }
+
+      this.firebaseProvider.pushMessages(userMessage).then(res => {
+        this.setMessageSentSetting();
+      },(error)=>{
+
+      });
+      
+    }else{
+      if (this.message != undefined) {
+        if (this.message.trim() != '') {
+          let userMessage = {
+            username: this.user,
+            message: this.message.trim(),
+            timestamp: new Date().getTime(),
+            messageType: "text",
+            url: ''
+          }
+          this.firebaseProvider.pushMessages(userMessage).then(res => {
+            this.setMessageSentSetting();
+          },(error)=>{
+
+          });
+        }else{
           this.message = '';
-          setTimeout(() => {
-            this.scrollToBottom();
-          }, 0);
-        });
-      }else{
-        this.message = '';
+        }
       }
     }
   }
 
+  setMessageSentSetting(){
+    this.message = '';
+    this.isUploaded = false;
+    this.fileUpload.nativeElement.value = '';
+    this.uploadObject = {
+      url: '',
+      messageType: ''
+    }
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 0);
+  }
+
   scrollToBottom() {
-    if (this.content != null) {
-      if (this.content.isScrolling == false) {
-        setTimeout(() => {
-          this.content.scrollToBottom();
-        });
-      }
+    if (this.content._scroll) {
+      setTimeout(() => {
+          this.content.scrollToBottom(0);
+      });
     }
   }
 
@@ -182,7 +229,12 @@ export class ChatPage {
       this.initLen = this.initLen - 15;
       this.firebaseProvider.getChatMessages()
          .pipe(map(item => item
-          .map(newItem => new ChatMessage(newItem["username"], newItem["message"], newItem["timestamp"], newItem["key"]))))
+          .map(newItem => new ChatMessage(newItem["username"], 
+          newItem["message"], 
+          newItem["timestamp"], 
+          newItem["key"],
+          newItem["messageType"], 
+          newItem["url"]))))
         .subscribe(async res => {
           //update: we are just showing without concat
           this.messages = await res.slice(this.initLen);
@@ -241,6 +293,63 @@ export class ChatPage {
 
   getHexFontByEmail(email){
     return this.colorHashMap[email].textColor? this.colorHashMap[email].textColor : 'black';
+  }
+
+  upload(event) {
+      //uploadObject reset after error complete, send, etc.
+      var newThis = this;
+      var uploadTask = this.storageProvider.uploadFiles(event, this.loggedUserDetails.email);
+      uploadTask.on('state_changed', (snapshot) => {
+        let bytesTransferred = (snapshot["bytesTransferred"] / snapshot["totalBytes"]) * 100;
+        newThis.uploadProgress = Math.round(bytesTransferred);
+      }, (error) => {
+        this.uploadProgress = undefined;
+        this.fileUpload.nativeElement.value = ""; //to reset file upload selector
+        this.uploadToast('error');
+        this.isUploaded = false;
+        this.uploadObject = {
+          url: '',
+          messageType: 'text'
+        }
+      }, () => {
+        this.uploadProgress = undefined;
+        this.uploadToast('success');
+        this.isUploaded = true;
+        this.uploadObject = {
+          url: uploadTask.snapshot.downloadURL,
+          messageType: this.getContentType(uploadTask.snapshot.metadata.contentType)
+        }
+        // console.log(uploadTask);
+        // console.log(uploadTask.snapshot.downloadURL);
+      });
+  }
+
+  uploadToast(type){
+    let msg = type=='success'? 'File is ready to send ': 'Error uploading file';
+    const toast = this.toastCtrl.create({
+      message: msg,
+      position: 'top',
+      duration: 2500
+    });
+    toast.present();
+  }
+
+  removeFile(){
+    this.uploadObject = {
+      url: '',
+      messageType: ''
+    };
+    this.fileUpload.nativeElement.value = ""; //to reset file upload selector
+    this.isUploaded = false;
+  }
+
+  triggerFileUpload(){
+    this.fileUpload.nativeElement.click();
+  }
+
+  getContentType(path:any){
+    //to get image or video contentType after successful update
+    return path?((path.split('/'))[0]):'';
   }
 
 

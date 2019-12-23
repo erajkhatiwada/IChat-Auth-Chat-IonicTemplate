@@ -3,4 +3,6 @@ export interface IMessage{
     message:string;
     timestamp:number;
     key?:any;
+    messageType?:string;
+    url?:string;
 }
