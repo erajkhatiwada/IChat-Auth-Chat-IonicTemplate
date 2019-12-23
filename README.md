@@ -33,6 +33,7 @@ Build the project
 }
 ```
 3) Go to Authentication -> Sign-in method -> Enable 'Email/Password'
+4) Go to Storage -> Enable storage to store pictures and videos
 
 (Note: You do not need to feed anything in database)
 
