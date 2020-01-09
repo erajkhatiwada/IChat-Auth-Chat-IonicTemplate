@@ -84,12 +84,18 @@ export class SignupPage {
   userCreatedToast(){
     let toast = this.toastCtrl.create({
       message: 'You have successfully registered',
-      duration: 3000,
+      duration: 2000,
       position: 'bottom'
     });
   
     toast.onDidDismiss(() => {
-      this.navCtrl.push(LoginPage);
+      this.userData = {
+        firstname:'',
+        lastname:'',
+        email : '',
+        password: ''
+      };
+      this.navCtrl.setRoot(LoginPage);
     });
   
     toast.present();

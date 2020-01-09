@@ -4,9 +4,15 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding class="background">
+
+  <div class="_pad">
+    <p class="join textAlignCenter">Join IChat </p>
+    <h1 class="_6b6b">Create your account </h1>
+  </div>
+
   <ion-list>
-    <form (ngSubmit)="signup()" [formGroup]="signupform">
+    <form (ngSubmit)="signup()" [formGroup]="signupform" class="wrapper formBox">
       <ion-item>
         <ion-label floating>First Name</ion-label>
         <ion-input type="text" [(ngModel)]="userData.firstname" formControlName="firstname"
@@ -93,7 +99,7 @@
           Maximum 50 characters
         </div>
       </ion-item>
-      <button type="submit" ion-button block color="primary" [disabled]="signupform.invalid || loading">
+      <button class="marginTop" type="submit" ion-button block color="primary" [disabled]="signupform.invalid || loading">
         SIGNUP 
         <ion-spinner *ngIf="loading" name="bubbles"></ion-spinner>
       </button>

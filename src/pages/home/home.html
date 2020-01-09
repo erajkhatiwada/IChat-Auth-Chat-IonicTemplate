@@ -7,8 +7,19 @@
   </div>
 
   <div padding>
-    <button ion-button block (click)="signUpPage()">SignUp</button>
-    <button ion-button block (click)="loginPage()">Login</button>
+    <div class="titleAndSlogan">
+      <h1 class="_6b6b">IChat</h1>
+      <p class="welcome textAlignCenter">A simple way to discuss, share pictures and videos, and plan things all in one place.</p>
+    </div>
+
+    <div class="wrapper">
+        <button ion-button block (click)="loginPage()">Login</button>
+    </div>
+    
+    <div class="wrapper">
+        <button ion-button block color="secondary" (click)="signUpPage()">SignUp</button>
+    </div>
+
   </div>
   
 </ion-content>

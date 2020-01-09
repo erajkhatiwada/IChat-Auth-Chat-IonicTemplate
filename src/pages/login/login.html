@@ -4,9 +4,14 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding class="loginBackground">
 
-  <form #loginForm="ngForm" (ngSubmit)="login()">
+  <div class="_pad">
+    <img src="https://firebasestorage.googleapis.com/v0/b/i-app-ce4b0.appspot.com/o/defaultPictureBucket%2Flogo.png?alt=media&token=cd97ef80-0a43-4b62-9f14-d4bc7ae5391e" class="logo">
+    <h1 class="_6b6b">Login to IChat </h1>
+  </div>
+
+  <form #loginForm="ngForm" (ngSubmit)="login()" class="wrapper formBox">
     <ion-item>
       <ion-label>Email: </ion-label>
       <ion-input type="text" required [(ngModel)]="user.email" name="email" email></ion-input>
@@ -18,14 +23,17 @@
     <p class="forget_your_password" text-right (click)="forgetYourPassword()">
       Forgot password?
     </p>
-    <button ion-button type="submit" block [disabled]="!loginForm.valid || loading">
+    <button ion-button color="secondary" type="submit" block [disabled]="!loginForm.valid || loading">
       Login
       <ion-spinner *ngIf="loading" name="bubbles"></ion-spinner>
     </button>
-    <p text-center>
-      Not a member? <span class="forget_your_password" (click)="goToSignUp()">Register</span>
-    </p>
   </form>
+
+  <div class="not_a_member">
+    <p text-center>
+      New to IChat? <span class="forget_your_password" (click)="goToSignUp()">Create an account</span>
+    </p>
+  </div>
 
   <p color="secondary" [class]=" (passwordChangeMessage === 'Password Reset Email Sent') ? 'passwordResetEmail passwordResetEmailSecondary' : 'passwordResetEmail passwordResetEmailDanger' " *ngIf="passwordChangeMessage">{{passwordChangeMessage}}</p>
 

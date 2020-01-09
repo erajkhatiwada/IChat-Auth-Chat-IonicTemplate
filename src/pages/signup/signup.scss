@@ -20,4 +20,57 @@ page-signup {
     .errorMessage{
       color:red;
     }
+
+    .wrapper {
+      max-width: 550px;
+      margin: auto;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      background: white;
+    }
+  
+    .formBox {
+      padding: 15px 20px;
+      text-align: center;
+      border: 1px solid #d8dee2;
+      border-radius: 5px;
+      max-width: 550px;
+      margin: auto;
+    }
+  
+    ._pad {
+      padding: 20px;
+      text-align: center;
+    }
+  
+    ._6b6b {
+      color: #000;
+      font-size: 35px;
+      font-weight: 600;
+      letter-spacing: -0.76px;
+      line-height: 44px;
+      text-align: center;
+    }
+  
+    .background {
+      background-color: #f9f9f9;
+    }
+  
+    .marginTop {
+      margin-top: 15px;
+    }
+  
+    .join{
+      color: rgba(0, 0, 0, .55);
+      font-family: Calibre, Helvetica Neue, Segoe UI, Helvetica, Arial, Lucida Grande, sans-serif;
+      font-size: 20px;
+      font-weight: 400;
+      margin: 0 0 27px;
+      text-align: left;
+      word-break: keep-all;
+    }
+  
+    .textAlignCenter{
+      text-align: center;
+    }
 }

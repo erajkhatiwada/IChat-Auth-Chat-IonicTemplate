@@ -91,7 +91,7 @@
       <!--Select file-->
       <input #uploadFile type="file" (change)="upload($event)" accept="image/*,video/*" style="display: none;">
       <!--Send button-->
-      <button ion-button icon-right color="royal" [disabled]="!message || fileUpload.nativeElement.value == '' " (click)="sendMessage()">
+      <button ion-button icon-right color="royal" [disabled]="!message && !fileUpload.nativeElement.value " (click)="sendMessage()">
         <ion-icon name="md-send"></ion-icon>
       </button>
       
